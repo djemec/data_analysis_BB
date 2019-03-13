@@ -35,6 +35,7 @@
 .Trashes
 ehthumbs.db
 
-# Raw Data #
+# Data Paths #
 ###################
 RAW_DATA/*
+PROCESSED_DATA/*
