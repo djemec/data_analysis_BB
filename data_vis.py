@@ -23,27 +23,19 @@ def data_clean(rdf):
     return rdf
 
 def data_extend(rdf):
-    bbid_set = list(set(rdf['bbid']))
-    rdf['dayAvgPersonHrs'] = rdf.apply(lambda avg: avg['personHours']/
-       ((avg['snapshotEndDate']-avg['snapshotStartDate']).days +1),axis=1)
+    ext_df = rdf.apply(lambda x: pd.Series(
+            {
+            'expPersonHours':x['personHours']/((x['snapshotEndDate']-x['snapshotStartDate']).days +1),
+            'bbid':x['bbid'],
+            'date_range':pd.date_range(x['snapshotStartDate'],x['snapshotEndDate'])
+            }), 
+        axis=1).set_index(['bbid','expPersonHours'])['date_range'].apply(pd.Series).stack().reset_index().drop('level_2',axis=1)
     
-    index = pd.MultiIndex.from_product([bbid_set,pd.date_range(
-            start = rdf.snapshotStartDate.min(), 
-            end = rdf.snapshotEndDate.max())], 
-            names=['bbid', 'date'])
-    ext_df = pd.DataFrame(index = index, data = {'expPersonHours':0})
-
-    dates_list = ext_df.index.get_level_values(1)
-    bbID_list = ext_df.index.get_level_values(0) 
-    
-    for row in rdf.itertuples():
-        ext_df.expPersonHours[(bbID_list == row.bbid) & (dates_list>=row.snapshotStartDate) & (dates_list<= row.snapshotEndDate)] += row[14]
-        
     # to remove 0 if needed
     ext_df = ext_df[(ext_df.expPersonHours != 0)]
     
     ext_df.reset_index(inplace=True)
-    rdf = pd.merge(rdf, ext_df, how='inner', on='bbid')
+    rdf = pd.merge(rdf, ext_df, how='inner', on='bbid').drop(['index'],axis=1)
 
     return rdf
 
@@ -55,7 +47,7 @@ def main():
     
     processed_data = data_clean(raw_data)
     processed_data = data_extend(processed_data)
-    processed_data.to_csv(out_dir + '/processed.csv',sep=',')
+    processed_data.to_csv(out_dir + '/processed.csv', sep=',', index = False)
     print("Success")
 
 if __name__ == "__main__":
