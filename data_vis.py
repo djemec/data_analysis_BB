@@ -7,8 +7,11 @@ Created on Sat Mar  2 13:19:49 2019
 """
 import pandas as pd
 import os
+import re
 
 out_dir = './PROCESSED_DATA'
+raw_data_bb ='./RAW_DATA/ex_bb_new.csv'
+raw_data_sprint = './RAW_DATA/ex_bb_sprint.csv'
 raw_data = pd.DataFrame()
 date_cols = ['snapshotStartDate','snapshotEndDate']
 cols_to_keep = ['bbid','bbRefCategory','bbRefName','snapshotId','snapshotName',
@@ -16,9 +19,9 @@ cols_to_keep = ['bbid','bbRefCategory','bbRefName','snapshotId','snapshotName',
                 'engagementId','engagementName','solutionId','solutionName',
                 'personHours']
 
-
 def data_clean(rdf):
     rdf = rdf.dropna(subset = ['personHours', 'snapshotEndDate', 'snapshotStartDate'])
+    rdf['snapshotNum'] = pd.to_numeric(rdf['snapshotName'].str.replace('[A-Za-z ()\-]','', regex=True), errors='coerce')
     rdf = rdf[rdf['personHours'] > 0]
     return rdf
 
@@ -35,7 +38,9 @@ def data_extend(rdf):
     ext_df = ext_df[(ext_df.expPersonHours != 0)]
     
     ext_df.reset_index(inplace=True)
-    rdf = pd.merge(rdf, ext_df, how='inner', on='bbid').drop(['index'],axis=1)
+    rdf = pd.merge(pd.merge(rdf, ext_df, how='inner', on='bbid'),
+        pd.read_csv(raw_data_sprint).rename(columns={'pkid':'snapshotId'}),
+        how='inner', on='snapshotId').drop(['index'],axis=1)
 
     return rdf
 
@@ -43,7 +48,7 @@ def main():
     global raw_data
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
-    raw_data = pd.read_csv('./RAW_DATA/ex_bb_new.csv', parse_dates=date_cols, usecols= cols_to_keep)
+    raw_data = pd.read_csv(raw_data_bb, parse_dates=date_cols, usecols= cols_to_keep)
     
     processed_data = data_clean(raw_data)
     processed_data = data_extend(processed_data)
