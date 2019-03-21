@@ -19,9 +19,18 @@ cols_to_keep = ['bbid','bbRefCategory','bbRefName','snapshotId','snapshotName',
                 'engagementId','engagementName','solutionId','solutionName',
                 'personHours']
 
+
+def sprint_parse(text):
+    sprint = re.search('sprint \d*\.?\d*', text.lower())
+    if sprint is None:
+        return 0
+    else:
+        return pd.to_numeric(re.sub("[a-z]", "", sprint.group(0)), errors='coerce')
+
 def data_clean(rdf):
     rdf = rdf.dropna(subset = ['personHours', 'snapshotEndDate', 'snapshotStartDate'])
-    rdf['snapshotNum'] = pd.to_numeric(rdf['snapshotName'].str.replace('[A-Za-z ()\-]','', regex=True), errors='coerce')
+    #rdf['snapshotNum'] = pd.to_numeric(rdf['snapshotName'].str.replace('[A-Za-z ()\-]','', regex=True), errors='coerce')
+    rdf['snapshotNum'] = rdf['snapshotName'].apply(sprint_parse)
     rdf = rdf[rdf['personHours'] > 0]
     return rdf
 
@@ -41,7 +50,7 @@ def data_extend(rdf):
     rdf = pd.merge(pd.merge(rdf, ext_df, how='inner', on='bbid'),
         pd.read_csv(raw_data_sprint).rename(columns={'pkid':'snapshotId'}),
         how='inner', on='snapshotId').drop(['index'],axis=1)
-
+    rdf.rename(columns={0: 'date'}, index=str, inplace=True)
     return rdf
 
 def main():
