@@ -19,6 +19,7 @@ cols_to_keep = ['bbid','bbRefCategory','bbRefName','snapshotId','snapshotName',
                 'engagementId','engagementName','solutionId','solutionName',
                 'personHours']
 
+
 def sprint_parse(text):
     sprint = re.search('sprint \d*\.?\d*', text.lower())
     if sprint is None:
@@ -30,7 +31,6 @@ def data_clean(rdf):
     rdf = rdf.dropna(subset = ['personHours', 'snapshotEndDate', 'snapshotStartDate'])
     #rdf['snapshotNum'] = pd.to_numeric(rdf['snapshotName'].str.replace('[A-Za-z ()\-]','', regex=True), errors='coerce')
     rdf['snapshotNum'] = rdf['snapshotName'].apply(sprint_parse)
-
     rdf = rdf[rdf['personHours'] > 0]
     return rdf
 
