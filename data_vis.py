@@ -25,7 +25,7 @@ def sprint_parse(text):
     if sprint is None:
         return 0
     else:
-        return pd.to_numeric(re.sub("[a-z]", "", sprint.group(0)), errors='coerce')
+return pd.to_numeric(re.sub("[a-z]", "", sprint.group(0)), errors='coerce')
 
 def data_clean(rdf):
     rdf = rdf.dropna(subset = ['personHours', 'snapshotEndDate', 'snapshotStartDate'])
