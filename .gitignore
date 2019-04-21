@@ -39,3 +39,6 @@ ehthumbs.db
 ###################
 RAW_DATA/*
 PROCESSED_DATA/*
+
+# Jupyter Notebook
+.ipynb_checkpoints
