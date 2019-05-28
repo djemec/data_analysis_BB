@@ -11,18 +11,11 @@ import os
 import re
 
 out_dir = './PROCESSED_DATA'
-raw_data_bb ='./RAW_DATA/app_feature_raw.xlsx'
+raw_data_bb = './RAW_DATA/app_feature_raw.xlsx'
 raw_data_sheet = 'Sheet1'
 raw_data = pd.DataFrame()
-date_cols = ['Start Date','End Date']
-
-	
-def sprint_parse(text):
-    sprint = re.search('sprint \d*\.?\d*', text.lower())
-    if sprint is None:
-        return 0
-    else:
-        return pd.to_numeric(re.sub("[a-z]", "", sprint.group(0)), errors='coerce')
+date_cols = ['Start Date', 'End Date']
+processed_template = 'Processed_Template_v2.xlsx'
 
 
 def data_clean(rdf):
