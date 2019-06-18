@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import os
 import re
+
 import matplotlib.pyplot as plt
 
 plt.style.use('seaborn-whitegrid')
@@ -75,6 +76,7 @@ def main():
     global raw_data
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
+
     
     # app features
     raw_data = pd.read_excel(raw_data_bb, sheet_name=raw_data_sheet, parse_dates= date_cols)
