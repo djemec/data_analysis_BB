@@ -8,7 +8,6 @@ Created on Sat Mar  2 13:19:49 2019
 import pandas as pd
 import numpy as np
 import os
-
 import matplotlib.pyplot as plt 
 
 plt.style.use('seaborn-whitegrid')
@@ -56,7 +55,7 @@ def cal_kpi_value(rdf, value_field, div_by_time):
      if div_by_time else \
      (avg_df['Daily Time Spent Hrs']/avg_df.groupby('Category Name')['Daily Time Spent Hrs'].transform("sum") * avg_df[value_field])
     avg_df_value = avg_df.groupby('Category Name')['weight_raw','Daily Time Spent Hrs'].apply(sum).reset_index()
-        
+
     return avg_df_value
 
 def plot_business_value(rdf, value_field, div_by_time):
