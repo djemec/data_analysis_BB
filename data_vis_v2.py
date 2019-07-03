@@ -123,7 +123,6 @@ def main():
     avg_dev_df = cal_kpi_value(processed_dev_data, 'Complexityvalue', False)
     avg_dev_df.to_csv(out_dir + '/processed_complexity_value_v2.csv', sep=',', index = False)
     
-    plt.close('all')
     fig, axes = plt.subplots(2, 2)
     axes[0, 0] = plot_graphs(axes[0, 0], avg_df, 'Business Value', 'App Feature', False)
     axes[0, 1] = plot_graphs(axes[0, 1], avg_density_df, 'Business Value', 'App Feature',True)
