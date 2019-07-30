@@ -10,11 +10,11 @@ import os
 import re
 
 out_dir = './PROCESSED_DATA'
-raw_data_bb ='./RAW_DATA/ex_bb_new.csv'
+raw_data_bb = './RAW_DATA/ex_bb_new.csv'
 raw_data_sprint = './RAW_DATA/ex_bb_sprint.csv'
 raw_data = pd.DataFrame()
-date_cols = ['snapshotStartDate','snapshotEndDate']
-cols_to_keep = ['bbid','bbRefCategory','bbRefName','snapshotId','snapshotName',
+date_cols = ['snapshotStartDate', 'snapshotEndDate']
+cols_to_keep = ['bbid','bbRefCategory', 'bbRefName', 'snapshotId', 'snapshotName',
                 'snapshotStatus','snapshotStartDate','snapshotEndDate',
                 'engagementId','engagementName','solutionId','solutionName',
                 'personHours']
