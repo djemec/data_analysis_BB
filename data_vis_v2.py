@@ -114,13 +114,13 @@ def main():
     print("Dev Task")
         
     avg_density_df = cal_kpi_value(processed_data, 'Business Value', True)
-    avg_density_df.to_csv(out_dir + '/processed_business_value_density_v2.csv', sep=',', index = False)
+    # avg_density_df.to_csv(out_dir + '/processed_business_value_density_v2.csv', sep=',', index = False)
     avg_df = cal_kpi_value(processed_data, 'Business Value', False)
-    avg_df.to_csv(out_dir + '/processed_business_value_v2.csv', sep=',', index = False)    
+    # avg_df.to_csv(out_dir + '/processed_business_value_v2.csv', sep=',', index = False)    
     avg_density_dev_df = cal_kpi_value(processed_dev_data, 'Complexityvalue', True)
-    avg_density_dev_df.to_csv(out_dir + '/processed_complexity_value_density_v2.csv', sep=',', index = False)
+    # avg_density_dev_df.to_csv(out_dir + '/processed_complexity_value_density_v2.csv', sep=',', index = False)
     avg_dev_df = cal_kpi_value(processed_dev_data, 'Complexityvalue', False)
-    avg_dev_df.to_csv(out_dir + '/processed_complexity_value_v2.csv', sep=',', index = False)
+    # avg_dev_df.to_csv(out_dir + '/processed_complexity_value_v2.csv', sep=',', index = False)
     
     fig, axes = plt.subplots(2, 2)
     axes[0, 0] = plot_graphs(axes[0, 0], avg_df, 'Business Value', 'App Feature', False)
